@@ -1,0 +1,8 @@
+{
+  "name": "librarySystem",
+  "version": "1.0.0",
+  "description": "React App for library management",
+  "main": "js/App.js",
+  "author": "Rohan",
+  "license": "MIT"
+}
