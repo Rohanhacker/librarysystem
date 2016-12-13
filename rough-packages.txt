@@ -1,0 +1,12 @@
+react and dom
+redux and stuff (may be)
+react router v4
+react standard
+webpack and dev server
+eslint
+css style scss loaders
+and other loaders as required
+axios
+bable
+bable loader
+lodash
