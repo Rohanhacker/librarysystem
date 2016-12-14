@@ -12,9 +12,12 @@
   "dependencies": {
     "axios": "^0.15.3",
     "lodash": "latest",
+    "normalize-css": "^2.3.1",
     "react": "^15.4.1",
+    "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.1",
-    "react-router": "next"
+    "react-router": "next",
+    "react-waypoint": "^4.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
