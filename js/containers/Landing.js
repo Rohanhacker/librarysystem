@@ -3,18 +3,22 @@ import {Grid, Row, Col, PageHeader, Pagination} from 'react-bootstrap'
 import Navbar from './Navbar'
 import Book from './Book'
 import axios from 'axios'
+import {connect} from 'react-redux'
+import {login} from '../actionCreators/actions'
 
-class Landing extends React.Component {
+
+class _Landing extends React.Component {
   constructor(props) {
     super(props)
     this.handleSelect = this.handleSelect.bind(this)
     this.state = {
       books: [],
-      page: 1
+      page: 1,
+      pages: 3
     }
   }
   handleSelect(eventKey) {
-    axios.get(`http://localhost:9123/Book?max=5&offset=${5*(eventKey-1)}`)
+    axios.get(`http://localhost:9123/api/book?max=5&offset=${5*(eventKey-1)}`)
          .then(res => {
            let books = res.data
            this.setState({
@@ -27,12 +31,22 @@ class Landing extends React.Component {
     })
   }
   componentDidMount() {
-    axios.get(`http://localhost:9123/Book?max=5&offset=0`)
+    if(localStorage.token) {
+      this.props.login()
+    }
+    axios.get(`http://localhost:9123/api/book?max=5&offset=0`)
          .then(res => {
            let books = this.state.books.concat(res.data)
            this.setState({ books })
          })
-       }
+    axios.get(`http://localhost:9123/api/pages`)
+      .then(res => {
+        let pages = Math.max(res.data[0]/5,3);
+        this.setState({
+          pages
+        })
+      })
+  }
   render() {
     return (
       <div>
@@ -43,7 +57,7 @@ class Landing extends React.Component {
               <Col xs={12} md={8} mdOffset={2}>
                 {this.state.books.map((book) => {
                   return (
-                    <Book key={book.id} {...book} />
+                    <Book key={book.id} auth={this.props.auth} {...book} />
                   )
                 })}
               </Col>
@@ -51,12 +65,22 @@ class Landing extends React.Component {
           </Grid>
         </div>
         <div className='center'>
-          <Pagination bsSize='large' items={10} activePage={this.state.page} onSelect={this.handleSelect} />
+          <Pagination bsSize='large' items={this.state.pages} activePage={this.state.page} onSelect={this.handleSelect} prev next first last ellipsis boundaryLinks maxButtons={5} />
         </div>
       </div>
     )
   }
 }
 
+const mapActionsToProps = (dispatch) => ({
+  login() {
+    dispatch(login())
+  }
+})
 
+const mapStateToProps = (state) => ({
+  auth: state.auth
+})
+
+const Landing = connect(mapStateToProps, mapActionsToProps)(_Landing)
 export default Landing

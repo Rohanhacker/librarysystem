@@ -11,13 +11,16 @@
   },
   "dependencies": {
     "axios": "^0.15.3",
+    "jwt-decode": "^2.1.0",
     "lodash": "latest",
     "normalize-css": "^2.3.1",
     "react": "^15.4.1",
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.1",
+    "react-redux": "^5.0.2",
     "react-router": "next",
-    "react-waypoint": "^4.1.0"
+    "react-waypoint": "^4.1.0",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

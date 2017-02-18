@@ -1,5 +1,5 @@
 import React from 'react'
-import {Grid, Row, Col, Button, PageHeader, Form, FormGroup, ControlLabel, FormControl, HelpBlock} from 'react-bootstrap'
+import {Grid, Row, Col, Button, PageHeader, Form, FormGroup, ControlLabel, FormControl, HelpBlock, Alert} from 'react-bootstrap'
 import Navbar from './Navbar'
 import axios from 'axios'
 axios.defaults.headers.post['Content-Type'] = 'application/json'
@@ -26,7 +26,7 @@ class createBook extends React.Component {
   }
   validateIsbn() {
     const length = this.state.isbn.length
-    if (length === 13) return 'success'
+    if (length === 10) return 'success'
     else return 'error'
   }
   handleTitleChange(event) {
@@ -56,26 +56,42 @@ class createBook extends React.Component {
   }
   handleSubmit(event) {
     event.preventDefault()
-    this.setState({
-      submitted: true
+      axios.post('http://localhost:9123/api/create', {
+        title: this.state.title,
+        edition: this.state.edition,
+        author: [{
+          name: this.state.author
+        }],
+        isbn: this.state.isbn,
+        publisher: {
+          name: this.state.publisher
+        }
+    }, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.token}` 
+        }
+      })
+    .then((response) => {
+      console.log(response)
+      if(response.status === 200) {
+        this.setState({
+          submitted: true,
+          title: '',
+          author: '',
+          publisher: '',
+          'isbn': '',
+          'edition': ''
+        })
+      }
     })
-    axios.post('http://localhost:9123/Book', {
-    title: this.state.title,
-    edition: this.state.edition,
-    author: [{
-      name: this.state.author
-    }],
-    isbn: this.state.isbn,
-    publisher: {
-      name: this.state.publisher
-    }
-  })
-  .then(function (response) {
-    console.log(response)
-  })
-  .catch(function (error) {
-    console.log(error)
-  })
+    .catch(function (error) {
+      console.log(error)
+    })  
+  }
+  handleAlertDismiss() {
+    this.setState({
+      submitted: false
+    })    
   }
   render() {
     return (
@@ -113,6 +129,13 @@ class createBook extends React.Component {
                 </Form>
               </Col>
             </Row>
+            {
+              this.state.submitted ? (
+                <Alert bsStyle="warning" onDismiss={this.handleAlertDismiss.bind(this)}>
+                  <strong>Yay !</strong> You've added a new book to library 
+                </Alert>
+              ) : null
+            }
           </Grid>
         </div>
       </div>

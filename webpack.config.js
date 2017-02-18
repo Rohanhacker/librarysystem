@@ -2,7 +2,7 @@ var path = require('path')
 
 module.exports = {
   context: __dirname,
-  entry: './js/App.js',
+  entry: './js/index.js',
   devtool: 'eval',
   output: {
     path: path.join(__dirname,'/public'),
@@ -11,7 +11,18 @@ module.exports = {
   },
   devServer: {
     publicPath: '/public/',
-    historyApiFallback: true
+    historyApiFallback: true,
+  proxy: {
+    '/some/path': {
+      target: 'https://localhost:8080',
+      secure: false,
+      bypass: function(req, res, proxyOptions) {
+        if (req.headers.accept.indexOf('html') !== -1) {
+          return '/index.html';
+          }
+        }
+      }
+    }
   },
   resolve: {
     extensions: ['.js','.json']
