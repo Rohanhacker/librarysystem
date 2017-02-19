@@ -20,4 +20,8 @@ Token.contextTypes = {
     router: object
 }
 
+Token.propTypes = {
+    params: object
+}
+
 export default Token

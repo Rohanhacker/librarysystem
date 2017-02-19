@@ -4,7 +4,7 @@ import Navbar from './Navbar'
 import Book from './Book'
 import axios from 'axios'
 import {connect} from 'react-redux'
-import {login} from '../actionCreators/actions'
+import {login,logout} from '../actionCreators/actions'
 
 
 class _Landing extends React.Component {
@@ -57,7 +57,7 @@ class _Landing extends React.Component {
               <Col xs={12} md={8} mdOffset={2}>
                 {this.state.books.map((book) => {
                   return (
-                    <Book key={book.id} auth={this.props.auth} {...book} />
+                    <Book key={book.id} auth={this.props.auth} logout={this.props.logout} {...book} />
                   )
                 })}
               </Col>
@@ -75,12 +75,23 @@ class _Landing extends React.Component {
 const mapActionsToProps = (dispatch) => ({
   login() {
     dispatch(login())
+  },
+  logout() {
+    dispatch(logout())
   }
 })
 
 const mapStateToProps = (state) => ({
   auth: state.auth
 })
+
+const {func, object } = React.PropTypes
+
+_Landing.propTypes = {
+  login: func,
+  logout: func,
+  auth: object
+}
 
 const Landing = connect(mapStateToProps, mapActionsToProps)(_Landing)
 export default Landing

@@ -14,7 +14,8 @@ class createBook extends React.Component {
     this.handleIsbnChange = this.handleIsbnChange.bind(this)
     this.handleEditionChange = this.handleEditionChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-
+    this.handleAlertDismiss = this.handleAlertDismiss.bind(this)
+    
     this.state = {
       submitted: false,
       title: '',
@@ -131,7 +132,7 @@ class createBook extends React.Component {
             </Row>
             {
               this.state.submitted ? (
-                <Alert bsStyle="warning" onDismiss={this.handleAlertDismiss.bind(this)}>
+                <Alert bsStyle='warning' onDismiss={this.handleAlertDismiss}>
                   <strong>Yay !</strong> You've added a new book to library 
                 </Alert>
               ) : null

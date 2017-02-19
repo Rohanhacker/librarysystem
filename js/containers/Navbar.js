@@ -81,5 +81,12 @@ const mapStateToProps = (state) => ({
   auth: state.auth
 })
 
+const {func } = React.PropTypes
+
+_NavBar.propTypes = {
+  logout: func,
+  auth: object
+}
+
 const NavBar = connect(mapStateToProps, mapActionsToProps)(_NavBar)
 export default NavBar

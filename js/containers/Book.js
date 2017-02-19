@@ -103,10 +103,12 @@ class Book extends React.Component {
         this.setState({
           showModal: false
         })
-      }
+      } 
     })
     .catch(function (error) {
       console.log(error)
+      localStorage.clear()
+      this.props.logout()
     })
   }
   handleDelete() {
@@ -118,13 +120,15 @@ class Book extends React.Component {
       }
     })
     .then((response) => {
+      console.log(response)
       if(response.status === 200) {
         console.log(response)
         this.setState({deleted: true})
       }
     })
     .catch((error) => {
-      console.log(error)
+      localStorage.clear()
+      this.props.logout()
     })
   }
   render() {
@@ -158,45 +162,45 @@ class Book extends React.Component {
               }
             </Col>
           </Row>
-                <Modal
-          show={this.state.showModal}
-          onHide={this.close}
+          <Modal
+            show={this.state.showModal}
+            onHide={this.close}
         >
-        <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title">Edit Book</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form onSubmit={this.handleEdit}>
-              <FormGroup>
-                <ControlLabel>Book Title</ControlLabel>
-                <FormControl onChange={this.handleTitleChange} type='text' value={this.state.title} placeholder='Book Title' />
-              </FormGroup>
-              <FormGroup validationState={this.validateIsbn()}>
-                <ControlLabel>ISBN</ControlLabel>
-                <FormControl onChange={this.handleIsbnChange} type='text' value={this.state.isbn} placeholder='ISBN' />
-                <HelpBlock>{this.validateIsbn}</HelpBlock>
-              </FormGroup>
-              <FormGroup>
-                <ControlLabel>Edition </ControlLabel>
-                <FormControl onChange={this.handleEditionChange} type='number' value={this.state.edition} placeholder='Edition' />
-              </FormGroup>
-              <FormGroup>
-                <ControlLabel>Publisher's Name</ControlLabel>
-                <FormControl onChange={this.handlePublisherChange} type='text' value={this.state.publisher} placeholder='Publishers Name' />
-              </FormGroup>
-              <FormGroup>
-                <ControlLabel>Authors Name </ControlLabel>
-                <FormControl onChange={this.handleAuthorChange} type='text' value={this.state.author} placeholder='Authors Name' />
-              </FormGroup>
-              <FormGroup>
-                <input type='submit' />
-              </FormGroup>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.close}>Close</Button>
-          </Modal.Footer>
-        </Modal>
+            <Modal.Header closeButton>
+              <Modal.Title id='contained-modal-title'>Edit Book</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form onSubmit={this.handleEdit}>
+                <FormGroup>
+                  <ControlLabel>Book Title</ControlLabel>
+                  <FormControl onChange={this.handleTitleChange} type='text' value={this.state.title} placeholder='Book Title' />
+                </FormGroup>
+                <FormGroup validationState={this.validateIsbn()}>
+                  <ControlLabel>ISBN</ControlLabel>
+                  <FormControl onChange={this.handleIsbnChange} type='text' value={this.state.isbn} placeholder='ISBN' />
+                  <HelpBlock>{this.validateIsbn}</HelpBlock>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Edition </ControlLabel>
+                  <FormControl onChange={this.handleEditionChange} type='number' value={this.state.edition} placeholder='Edition' />
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Publisher's Name</ControlLabel>
+                  <FormControl onChange={this.handlePublisherChange} type='text' value={this.state.publisher} placeholder='Publishers Name' />
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Authors Name </ControlLabel>
+                  <FormControl onChange={this.handleAuthorChange} type='text' value={this.state.author} placeholder='Authors Name' />
+                </FormGroup>
+                <FormGroup>
+                  <input type='submit' />
+                </FormGroup>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={this.close}>Close</Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       )
     } else {
@@ -205,14 +209,18 @@ class Book extends React.Component {
   }
 }
 
-const {string, object, number, array } = React.PropTypes
+const {string, object, number, array, func } = React.PropTypes
 
 Book.propTypes = {
   title: string,
   isbn: string,
   edition: number,
   author: array,
-  publisher: object
+  publisher: object,
+  userId: object,
+  auth: object,
+  logout: func,
+  id: object
 }
 
 export default Book
