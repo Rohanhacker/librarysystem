@@ -54,7 +54,7 @@ class _NavBar extends React.Component {
         <Navbar.Collapse>
           <Nav>
             {bookNav}
-            {addNav}
+            {this.props.auth ? addNav : null }
           </Nav>
           <Nav pullRight>
             {authButton}
